@@ -2,10 +2,23 @@ Package: cisSimulation
 Type: Package
 Title: What the Package Does (Title Case)
 Version: 0.1.0
-Author: Who wrote it
+Authors@R: 
+    person(given = "Joshua",
+           family = "Blake",
+           role = c("aut", "cre"),
+           email = "joshua.blake@mrc-bsu.cam.ac.uk",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
 Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+RoxygenNote: 7.2.3
+Imports: 
+    dplyr,
+    rlang,
+    tibble,
+    tidyr
