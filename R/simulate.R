@@ -26,7 +26,7 @@ simulate_cis = function(
     )
 
   testing_times(n_indivs) |>
-    left_join(tbl_individuals(by = "i")) |>
+    left_join(tbl_individuals, by = "i") |>
     mutate(test_result = testing(.data[["test_time"]] - .data[["infection_time"]], .data[["duration"]]))
 }
 
@@ -62,6 +62,7 @@ testing_fixed = function(test_interval = 7, first_test = -90, last_test = 300) {
 #' @export
 testing_custom = function(tbl_times) {
   schedule_ids = unique(tbl_times$i)
+  stopifnot(all(is.finite(tbl_times$test_time)))
   function(n_indivs) {
     tibble::tibble(
       i = 1:n_indivs
@@ -69,7 +70,7 @@ testing_custom = function(tbl_times) {
       dplyr::mutate(
         test_schedule = sample(schedule_ids, n(), replace = TRUE)
       ) |>
-      dplyr::left_join(schedule_ids, by = c("test_schedule" = "i"))
+      dplyr::left_join(tbl_times, by = c("test_schedule" = "i"))
   }
 }
 
@@ -85,8 +86,8 @@ duration_custom = function(pmf) {
 
 #' A flat epidemic
 #' @export
-infections_flat = function () {
-  function(n) rep(1, n)
+infections_flat = function(possible_times = 1:100) {
+  function(n) sample(possible_times, n, TRUE)
 }
 
 #' A fixed test sensitivity with no false positives
