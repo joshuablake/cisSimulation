@@ -68,7 +68,7 @@ testing_custom = function(tbl_times) {
       i = 1:n_indivs
     ) |>
       dplyr::mutate(
-        test_schedule = sample(schedule_ids, n(), replace = TRUE)
+        test_schedule = sample(schedule_ids, n(), replace = (n_indivs > length(schedule_ids)))
       ) |>
       dplyr::left_join(tbl_times, by = c("test_schedule" = "i"))
   }
