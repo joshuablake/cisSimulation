@@ -4,7 +4,7 @@
 \alias{infections_flat}
 \title{A flat epidemic}
 \usage{
-infections_flat()
+infections_flat(possible_times = 1:100)
 }
 \description{
 A flat epidemic

@@ -7,7 +7,7 @@
 testing_custom(tbl_times)
 }
 \arguments{
-\item{tbl_times}{Tibble with two columns i (individual) and test_time for each test}
+\item{tbl_times}{Tibble with two columns: individual and test_time for each test}
 }
 \description{
 Custom testing times

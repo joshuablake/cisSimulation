@@ -1,15 +1,15 @@
 test_that("daily tests", {
   expected_len = 15
   result = testing_fixed(1, 0, 14)(1)
-  expect_length(result$i, expected_len)
-  expect_equal(result$i, rep(1, expected_len))
+  expect_length(result$individual, expected_len)
+  expect_equal(result$individual, rep(1, expected_len))
   expect_equal(result$test_time, 0:14)
 })
 
 test_that("weekly tests", {
   result = testing_fixed(7, 0, 20)(10)
-  expect_true(all(table(result$i) == 3))
-  expect_equal(dplyr::n_distinct(result$i), 10)
+  expect_true(all(table(result$individual) == 3))
+  expect_equal(dplyr::n_distinct(result$individual), 10)
   expect_true(all(result$test_time >= 0))
   expect_true(all(result$test_time <= 20))
 })
@@ -18,8 +18,8 @@ test_that("tests are uniform", {
   n_indiv = 100e3
   expected_len = 10 * n_indiv
   result = testing_fixed(10, 1, 100)(n_indiv)
-  expect_true(all(table(result$i) == 10))
-  expect_equal(dplyr::n_distinct(result$i), n_indiv)
+  expect_true(all(table(result$individual) == 10))
+  expect_equal(dplyr::n_distinct(result$individual), n_indiv)
   expect_true(all(result$test_time >= 1))
   expect_true(all(result$test_time <= 100))
   tests_by_day = table(result$test_time)
@@ -75,7 +75,7 @@ test_that("test results sensitivity linear", {
   expect_length(result, input_len)
 
   result_summary = tibble::tibble(
-    i = rep(1:n_indiv, length(uniq_times)),
+    individual = rep(1:n_indiv, length(uniq_times)),
     time = times,
     result = result,
   ) |>
@@ -89,12 +89,13 @@ test_that("test results sensitivity linear", {
 })
 
 test_that("test flat infections", {
-  test_len = function(n) {
-    result = infections_flat()(n)
-    expect_length(result, n)
-    expect_true(all(result == 1))
-  }
-  test_len(10)
-  test_len(500)
-  test_len(1e6)
+  n = 10e3
+  max = 10
+  result = infections_flat(1:max)(n)
+  expect_length(result, n)
+  l999 = qbinom(0.001, n, 1/max)
+  u999 = qbinom(0.999, n, 1/max)
+  counts = table(result)
+  expect_true(all(l999 <= counts))
+  expect_true(all(u999 >= counts))
 })

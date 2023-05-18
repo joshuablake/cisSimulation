@@ -18,7 +18,7 @@ simulate_cis = function(
     ) {
 
   tbl_individuals = tibble(
-    i = 1:n_indivs
+    individual = 1:n_indivs
   ) |>
     mutate(
       infection_time = infection_times(n()),
@@ -26,7 +26,7 @@ simulate_cis = function(
     )
 
   testing_times(n_indivs) |>
-    left_join(tbl_individuals, by = "i") |>
+    left_join(tbl_individuals, by = "individual") |>
     mutate(test_result = testing(.data[["test_time"]] - .data[["infection_time"]], .data[["duration"]]))
 }
 
@@ -44,33 +44,33 @@ testing_fixed = function(test_interval = 7, first_test = -90, last_test = 300) {
   tests_after_first = seq.int(from = 0, to = last_test - first_test, by = test_interval)
   function(n_indivs) {
     tibble(
-      i = 1:n_indivs
+      individual = 1:n_indivs
     ) |>
       mutate(
         tests_after_first = list(tests_after_first),
         i_first_test = sample.int(test_interval, n(), TRUE) - 1 + first_test,
       ) |>
       unnest("tests_after_first") |>
-      transmute(.data[["i"]], test_time = .data[["i_first_test"]] + .data[["tests_after_first"]]) |>
+      transmute(.data[["individual"]], test_time = .data[["i_first_test"]] + .data[["tests_after_first"]]) |>
       filter(between(.data[["test_time"]], first_test, last_test))
   }
 }
 
 #' Custom testing times
 #'
-#' @param tbl_times Tibble with two columns i (individual) and test_time for each test
+#' @param tbl_times Tibble with two columns: individual and test_time for each test
 #' @export
 testing_custom = function(tbl_times) {
-  schedule_ids = unique(tbl_times$i)
+  schedule_ids = unique(tbl_times$individual)
   stopifnot(all(is.finite(tbl_times$test_time)))
   function(n_indivs) {
     tibble::tibble(
-      i = 1:n_indivs
+      individual = 1:n_indivs
     ) |>
       dplyr::mutate(
         test_schedule = sample(schedule_ids, n(), replace = (n_indivs > length(schedule_ids)))
       ) |>
-      dplyr::left_join(tbl_times, by = c("test_schedule" = "i"))
+      dplyr::left_join(tbl_times, by = c("test_schedule" = "individual"))
   }
 }
 

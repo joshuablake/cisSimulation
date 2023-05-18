@@ -4,12 +4,12 @@
 \alias{sensitivity_linear}
 \title{A test sensitivity that decreases linearly over time to a constant value}
 \usage{
-sensitivity_linear(max = 0.9, min = 0.5, time_to_min = 50)
+sensitivity_linear(max = 0.9, min = 0.5, time_of_min = 50)
 }
 \arguments{
 \item{min, max}{Minimum and maximum test sensitivity to use}
 
-\item{time_to_min}{Time at which test sensitivity stops decreasing}
+\item{time_of_min}{Days after infection when minimum occurs}
 }
 \description{
 A test sensitivity that decreases linearly over time to a constant value
