@@ -14,7 +14,7 @@ simulation_to_episodes = function(tbl_sims) {
       prev_neg = max(c(.data[["test_time"]][.data[["test_time"]] < .data[["first_pos"]]], -Inf)),
       next_neg = min(c(.data[["test_time"]][.data[["test_time"]] > .data[["last_pos"]]], Inf)),
       second_neg = min(c(.data[["test_time"]][.data[["test_time"]] > .data[["next_neg"]]], Inf)),
-      n = sum(prev_neg <= .data[["test_time"]] & .data[["test_time"]] <= .data[["next_neg"]]),
+      n = sum(.data[["prev_neg"]] <= .data[["test_time"]] & .data[["test_time"]] <= .data[["next_neg"]]),
       test_times = list(.data[["test_time"]]),
       .groups = "drop"
     ) %>%

@@ -85,6 +85,8 @@ duration_custom = function(pmf) {
 }
 
 #' A flat epidemic
+#' 
+#' @param possible_times a vector of times at which infections can occur
 #' @export
 infections_flat = function(possible_times = 1:100) {
   function(n) sample(possible_times, n, TRUE)

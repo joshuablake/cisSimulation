@@ -6,6 +6,9 @@
 \usage{
 infections_flat(possible_times = 1:100)
 }
+\arguments{
+\item{possible_times}{a vector of times at which infections can occur}
+}
 \description{
 A flat epidemic
 }
